@@ -1,0 +1,70 @@
+.filter-section h4 {
+  font-size: 17px;
+  margin-top: 10px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  margin-bottom: 10px;
+}
+
+.filter-option input[type="radio"] {
+  margin-right: 10px;
+}
+
+.filter-option label {
+  font-size: 16px;
+  color: #333;
+}
+
+.filter-section {
+  width: 300px;
+  height: 210px;
+  margin-left: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+/* Favorite */
+.heart-button {
+  position: absolute; /* Đặt vị trí tuyệt đối trong hình ảnh */
+  top: 25px;
+  right: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 24px;
+  transition: color 0.3s;
+  opacity: 0.8;
+}
+
+.heart-button:hover {
+  color: #ff4081;
+  opacity: 1;
+}
+/* button */
+.property-item .a {
+  padding: 0 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.property-item .btn-success {
+  background-color: #ffffff;
+  color: #0499a8;
+  border: 2px solid #0499a8 !important;
+}
+
+.property-item .btn-warning {
+  background-color: #ffffff;
+  color: #f0825f;
+  border: 2px solid #f0825f !important;
+}
+
+.property-item .d-flex {
+  margin-top: 10px;
+}

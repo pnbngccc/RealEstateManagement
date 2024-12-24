@@ -1,0 +1,63 @@
+.slider {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* Hoặc kích thước bạn muốn */
+  margin: auto;
+}
+
+
+.slider-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  cursor: pointer;
+}
+.slider-arrow.left {
+  left: 10px;
+}
+
+.slider-arrow.right {
+  right: 10px;
+}
+
+.slider-image {
+  flex: 1;
+  max-width: 600px; /* Đặt chiều rộng tối đa */
+}
+
+.slider-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px; /* Bo góc */
+}
+
+.slider-thumbnails {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.thumbnail {
+  width: 100px;
+  height: auto;
+  margin: 0 5px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border 0.3s;
+}
+
+.thumbnail:hover {
+  border: 2px solid #d9534f; /* Đổi màu viền khi hover */
+}
+
+.thumbnail.active {
+  border: 2px solid #d9534f; /* Viền màu cho hình đang được chọn */
+}

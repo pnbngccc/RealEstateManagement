@@ -1,0 +1,47 @@
+.container-detail {
+  display: flex; /* Sử dụng flexbox cho container */
+  justify-content: space-between; /* Đẩy các phần tử sang hai bên */
+  align-items: flex-start; /* Căn chỉnh các phần tử theo chiều dọc */
+}
+.wrapper {
+  margin: 0 auto; /* Giúp căn giữa */
+  max-width: 1200px; /* Giới hạn chiều rộng tối đa */
+}
+.customer-pin {
+  height: auto;
+  width: 15px;
+}
+.features {
+  flex: 1; /* Để phần tử features chiếm không gian */
+  max-width: 35%; /* Đặt chiều rộng tối đa cho features */
+}
+.user {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  
+}
+.user-buttons {
+  display: flex;
+  flex-direction: column; 
+  margin-top: 10px; 
+  align-items: center;
+}
+
+.user-buttons button {
+  margin-bottom: 10px; /* Khoảng cách giữa các nút */
+  width: 40%; /* Đặt chiều rộng nút bằng 100% */
+}
+
+.customer-button{
+  border-radius: 10px;
+  border: 1px solid #005555;
+}
+.controls button{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  margin-left: 20px;
+}

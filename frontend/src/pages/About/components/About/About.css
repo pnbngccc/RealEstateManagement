@@ -1,0 +1,85 @@
+.filter-section h4 {
+  font-size: 17px; /* Kích thước chữ tiêu đề */
+  margin-top: 10px; /* Khoảng cách dưới tiêu đề */
+}
+
+.filter-option {
+  display: flex; /* Hiển thị dạng flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  margin-bottom: 10px; /* Khoảng cách giữa các tùy chọn */
+}
+
+.filter-option input[type="radio"] {
+  margin-right: 10px; /* Khoảng cách bên phải cho nút radio */
+}
+
+.filter-option label {
+  font-size: 16px; /* Kích thước chữ cho nhãn */
+  color: #333; /* Màu chữ */
+}
+
+.filter-section {
+  width: 300px; /* Đặt chiều rộng cho phần lọc */
+  height: 210px;
+  margin-left: 20px; /* Khoảng cách giữa danh sách và phần lọc */
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+}
+
+.property-content .title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+}
+.property-content .title {
+  color: #005555;
+}
+.property-content .title span {
+  position: relative;
+  padding-bottom: 4px;
+  display: inline-block;
+}
+.property-content .title span:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 2px;
+  left: 0;
+  bottom: 0;
+  background-color: #005555;
+}
+/* button */
+/* .property-item .btn {
+    padding: 0 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s, opacity 0.3s;
+  }
+  
+  .property-item .btn-success {
+    background-color: #ffffff; 
+    color: #0499a8; 
+    border: 2px solid #0499a8 !important; 
+  }
+  
+  .property-item .btn-success:hover {
+   
+    opacity: 0.8; 
+  }
+  
+  .property-item .btn-warning {
+    background-color: #ffffff; 
+    color: #f0825f; 
+    border: 2px solid #f0825f !important; 
+  }
+  
+  .property-item .btn-warning:hover {
+   
+    opacity: 0.8;
+  }
+  
+  .property-item .d-flex {
+    margin-top: 10px; 
+  } */

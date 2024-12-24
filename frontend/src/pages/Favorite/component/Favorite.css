@@ -1,0 +1,42 @@
+/* Favorite.css */
+
+/* Container cho danh sách yêu thích */
+.favorite-list {
+  display: flex;
+  flex-wrap: wrap; /* Cho phép xuống hàng khi không đủ chỗ */
+  justify-content: space-between; /* Căn chỉnh các mục đều trên hàng */
+  margin: -10px; /* Để bù cho margin của các item */
+}
+
+/* Item trong danh sách yêu thích */
+.favorite-property-item {
+  flex: 1 1 calc(30% - 20px); /* Mỗi item chiếm khoảng 30% chiều rộng */
+  margin: 10px; /* Khoảng cách giữa các item */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Bóng cho item */
+  border-radius: 5px; /* Bo tròn các góc */
+  overflow: hidden; /* Đảm bảo không có phần thừa */
+  background: #fff; /* Nền trắng cho mỗi item */
+  transition: transform 0.3s; /* Hiệu ứng khi hover */
+}
+
+/* Đảm bảo rằng ảnh không bị méo */
+.favorite-property-item img {
+  width: 100%; /* Ảnh chiếm toàn bộ chiều rộng của item */
+  height: auto; /* Giữ tỷ lệ ảnh */
+}
+
+/* Nội dung trong item */
+.property-content {
+  padding: 15px; /* Padding cho nội dung */
+}
+
+/* Kiểu cho tiêu đề giá */
+.price {
+  font-weight: bold; /* Đậm cho tiêu đề */
+  color: #333; /* Màu sắc cho tiêu đề */
+}
+
+/* Kiểu cho nút xem chi tiết */
+.btn-primary {
+  margin-top: 10px; /* Khoảng cách trên nút */
+}

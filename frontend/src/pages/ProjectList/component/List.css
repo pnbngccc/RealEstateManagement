@@ -1,0 +1,80 @@
+.table {
+  margin-top: 20px;
+}
+
+th,
+td {
+  text-align: center;
+  font-size: 15px;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.table img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.btn-create,
+.btn-edit,
+.btn-delete {
+  margin-left: 10px;
+  padding: 2px 20px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid #d8d6d6;
+}
+
+tbody tr:hover {
+  background-color: #f3f3f3;
+}
+
+.btn-search {
+  padding: 5px 15px; /* Khoảng cách bên trong */
+  border-radius: 8px; /* Bo góc */
+  background-color: #007bff; /* Màu nền */
+  color: white; /* Màu chữ */
+  border: none; /* Không có border */
+}
+/* ô input crud */
+/* Container cho các ô nhập liệu */
+.input-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  position: relative; /* Để có thể kiểm soát z-index */
+  z-index: 10; /* Đặt z-index cao hơn */
+}
+
+/* Input Fields */
+.input-group input[type="text"],
+.input-group input[type="number"] {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s;
+  z-index: 20;
+  position: relative;
+  outline: 0;
+}
+/*Select*/
+select {
+  flex: 1;
+  min-width: 220px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s;
+  z-index: 20;
+  position: relative;
+  outline: none;
+}

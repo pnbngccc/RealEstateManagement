@@ -1,0 +1,28 @@
+.filter-section h4 {
+  font-size: 17px;
+  margin-top: 10px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  margin-bottom: 10px; /* Khoảng cách giữa các tùy chọn */
+}
+
+.filter-option input[type="radio"] {
+  margin-right: 10px; /* Khoảng cách bên phải cho nút radio */
+}
+
+.filter-option label {
+  font-size: 16px;
+  color: #333;
+}
+
+.filter-section {
+  width: 300px;
+  height: 210px;
+  margin-left: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
