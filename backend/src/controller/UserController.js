@@ -32,8 +32,8 @@ const getUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const { _id, username, role, phone } = user;
-    return res.status(200).json({ _id, username, role, phone });
+    const { _id, username, role, phone, fullname } = user;
+    return res.status(200).json({ _id, username, role, phone, fullname });
   } catch (error) {
     console.error("Error fetching user:", error); // Log lỗi
     return res.status(500).json({ message: "Failed to get user" });
@@ -127,4 +127,10 @@ const profile = async (req, res) => {
   res.json("Profile");
 };
 
-export default { getListUser, profile, getUser, updateUser, deleteUser };
+export default {
+  getListUser,
+  profile,
+  getUser,
+  updateUser,
+  deleteUser,
+};

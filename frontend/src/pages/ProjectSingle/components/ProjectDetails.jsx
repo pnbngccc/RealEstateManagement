@@ -1,141 +1,170 @@
 import { useEffect, useState } from "react";
-import "@assets/fonts/icomoon/style.css";
-import "@assets/fonts/flaticon/font/flaticon.css";
-import "@assets/css/tiny-slider.css";
-import "aos/dist/aos.css";
-import "@assets/css/style.css";
-import { tns } from "tiny-slider/src/tiny-slider";
-import img1 from "@assets/images/img_1.jpg";
-import img2 from "@assets/images/img_2.jpg";
-import img3 from "@assets/images/img_3.jpg";
-import person2 from "@assets/images/person_2-min.jpg";
+import { useParams } from "react-router-dom";
+import chat from "@assets/images/chat.png";
+import pin from "@assets/images/pin.png";
+import axios from "axios";
+import MyMap from "../../../components/Map/Map";
+import Slider from "../../../components/Slider/Slider";
+import "./ProjectDetail.css";
 
-// Dữ liệu bất động sản
-const properties = [
-  {
-    id: 1,
-    images: [img1, img2, img3],
-    price: "$1,291,000",
-    address: "5232 California Ave. 21BC",
-    city: "California, USA",
-    beds: 2,
-    baths: 2,
-    agent: {
-      name: "Alicia Huston",
-      position: "Real Estate",
-      bio: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      image: person2,
-    },
-  },
-  // Thêm các bất động sản khác tương tự
-];
-
-function ProjectList() {
-  const [currentProperty, setCurrentProperty] = useState(properties[0]);
+function ProjectDetail() {
+  const { id } = useParams();
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [position, setPosition] = useState(null);
 
   useEffect(() => {
-    const slider = tns({
-      container: ".img-property-slide",
-      items: 1,
-      slideBy: 1,
-      autoplay: true,
-      autoplayButtonOutput: false,
-      controls: false,
-      nav: true,
-      speed: 200,
-    });
+    const fetchPropertyInfo = async () => {
+      try {
+        const propertyResponse = await axios.get(
+          `http://localhost:5000/api/project/${id}`
+        );
 
-    return () => {
-      if (slider && slider.destroy) {
-        slider.destroy();
+        if (propertyResponse.data.success) {
+          setProject(propertyResponse.data.data);
+        } else {
+          throw new Error("Không tìm thấy tài sản.");
+        }
+      } catch (err) {
+        console.error("Lỗi khi lấy dữ liệu:", err);
+        setError(err.response?.data?.message || "Lỗi khi lấy dữ liệu tài sản.");
+      } finally {
+        setLoading(false);
       }
     };
-  }, [currentProperty]);
+
+    fetchPropertyInfo();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchCoordinates = async () => {
+      if (project && project.address) {
+        try {
+          const response = await axios.get(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+              project.address
+            )}`
+          );
+
+          if (response.data.length > 0) {
+            const { lat, lon } = response.data[0];
+            setPosition([parseFloat(lat), parseFloat(lon)]);
+          } else {
+            console.error(
+              "Không tìm thấy tọa độ cho địa chỉ:",
+              project.address
+            );
+          }
+        } catch (err) {
+          console.error("Lỗi khi lấy tọa độ:", err);
+        }
+      }
+    };
+
+    fetchCoordinates();
+  }, [project]);
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "200px" }}
+      >
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Đang tải...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!project) {
+    return <div>Tài sản không tồn tại hoặc dữ liệu bị lỗi.</div>;
+  }
 
   return (
-    <div className="section">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-8">
-            <div className="img-property-slide-wrap">
-              <div className="img-property-slide">
-                {currentProperty.images.map((image, index) => (
-                  <img
-                    src={image}
-                    alt={`Image ${index + 1}`}
-                    className="img-fluid"
-                    key={index}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-4">
-            <h2 className="heading text-primary">{currentProperty.address}</h2>
-            <p className="meta">{currentProperty.city}</p>
-            <p className="text-black-50">{currentProperty.price}</p>
-            <div className="d-block agent-box p-5">
-              <div className="img mb-4">
-                <img
-                  src={currentProperty.agent.image}
-                  alt="Agent"
-                  className="img-fluid"
-                />
-              </div>
-              <div className="text">
-                <h3 className="mb-0">{currentProperty.agent.name}</h3>
-                <div className="meta mb-3">
-                  {currentProperty.agent.position}
+    <div className="container-detail container my-4">
+      <div className="details">
+        <div className="wrapper">
+          {/* Sử dụng component Slider cho mảng hình ảnh */}
+          <Slider images={project.images} />
+          <div className="info">
+            <div className="d-flex justify-content-between">
+              <div className="post">
+                <h1 className="h4">{project.title}</h1>
+                <div className="d-flex align-items-center">
+                  <img src={pin} alt="" className="me-2 customer-pin" />
+                  <span>{project.address}</span>
                 </div>
-                <p>{currentProperty.agent.bio}</p>
-                <ul className="list-unstyled social dark-hover d-flex">
-                  <li className="me-1">
-                    <a href="#">
-                      <span className="icon-instagram"></span>
-                    </a>
-                  </li>
-                  <li className="me-1">
-                    <a href="#">
-                      <span className="icon-twitter"></span>
-                    </a>
-                  </li>
-                  <li className="me-1">
-                    <a href="#">
-                      <span className="icon-facebook"></span>
-                    </a>
-                  </li>
-                  <li className="me-1">
-                    <a href="#">
-                      <span className="icon-linkedin"></span>
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
+            <div className="custom">{project.description}</div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-lg-12 text-center">
-            <h3 className="mt-5">Other Properties</h3>
-            <div className="property-list">
-              {properties.map((property) => (
-                <div
-                  key={property.id}
-                  className="property-item"
-                  onClick={() => setCurrentProperty(property)}
-                >
-                  <img
-                    src={property.images[0]}
-                    alt={property.address}
-                    className="img-fluid"
-                  />
-                  <div>
-                    <h4>{property.address}</h4>
-                    <p>{property.city}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+      </div>
+
+      <div className="features mt-4">
+        <div className="user d-flex align-items-center">
+          <img
+            src={project.idUser?.avatar || "/default-user.png"}
+            alt="Người dùng"
+            className="rounded-circle me-2 customer-img"
+            style={{ width: "65px", height: "65px" }}
+          />
+          <span>{project.idUser?.username}</span>
+        </div>
+
+        <div className="wrapper">
+          <p className="h5">Chi tiết</p>
+
+          <div className="d-flex mt-2">
+            {project.building && (
+              <span className="custom-spacing" style={{ marginRight: "10%" }}>
+                <strong>
+                  <i className="fa-regular fa-building"></i>
+                </strong>{" "}
+                {project.building}
+              </span>
+            )}
+            {project.apartment && (
+              <span className="custom-spacing" style={{ marginRight: "10%" }}>
+                <strong>
+                  <i className="fa-solid fa-house"></i>
+                </strong>{" "}
+                {project.apartment}
+              </span>
+            )}
+            <span>
+              <strong>{project.area} ha</strong>
+            </span>
+          </div>
+
+          <p className="h5">Tọa lạc</p>
+          <div className="map_container mb-3">
+            {position && (
+              <MyMap
+                position={{ lat: position[0], lng: position[1] }}
+                popupText={project.address}
+              />
+            )}
+          </div>
+
+          <div className="d-flex controls">
+            <button className="customer-button">
+              <img
+                src={chat}
+                alt=""
+                className="me-1"
+                style={{ width: "10px", height: "10px" }}
+              />
+              <a href="mailto:RealEstateManagement@gmail.com" >
+                    Liên hệ lại tôi
+                  </a>
+            </button>
           </div>
         </div>
       </div>
@@ -143,4 +172,4 @@ function ProjectList() {
   );
 }
 
-export default ProjectList;
+export default ProjectDetail;

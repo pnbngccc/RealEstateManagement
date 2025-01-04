@@ -6,7 +6,7 @@ const newsSchema = new mongoose.Schema({
   published_date: {
     type: Date,
   },
-  image: String,
+  images: [{ type: String }],
   status: String,
   idAuthor: {
     type: mongoose.Schema.Types.ObjectId,

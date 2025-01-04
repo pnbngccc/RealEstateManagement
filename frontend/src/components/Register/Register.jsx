@@ -149,6 +149,7 @@ function Register() {
     setLoading(true);
     setErrorMessage("");
     const formData = new FormData(e.target);
+    const fullname = formData.get("register-fullname");
     const username = formData.get("register-username");
     const password = formData.get("register-password");
     const confirmPassword = formData.get("register-confirm-password");
@@ -169,6 +170,7 @@ function Register() {
           password,
           role,
           phone,
+          fullname,
         }
       );
 
@@ -193,6 +195,16 @@ function Register() {
         {errorMessage && <span>{errorMessage}</span>}
         {isLoading && <div className="loading-message">Đang tải...</div>}
         <form onSubmit={handleRegisterSubmit}>
+          <div className="form-group">
+            <label htmlFor="register-fullname">Họ và tên:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="register-fullname"
+              name="register-fullname"
+              required
+            />
+          </div>
           <div className="form-group">
             <label htmlFor="register-username">Tên đăng nhập:</label>
             <input

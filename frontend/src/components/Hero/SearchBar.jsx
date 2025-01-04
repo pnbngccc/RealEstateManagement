@@ -1,29 +1,35 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../assets/fonts/icomoon/style.css";
 import "../../assets/fonts/flaticon/font/flaticon.css";
 import "aos/dist/aos.css";
 import "../../assets/css/style.css";
 import "../../assets/css/tiny-slider.css";
 import AOS from "aos";
-import { tns } from "tiny-slider/src/tiny-slider";
 import heroBg1 from "../../assets/images/hero_bg_1.jpg";
 import heroBg2 from "../../assets/images/hero_bg_2.jpg";
 import heroBg3 from "../../assets/images/hero_bg_3.jpg";
+import axios from "axios";
+import { tns } from "tiny-slider/src/tiny-slider";
+import "./Form.css";
 
 function SearchBar() {
+  const navigate = useNavigate();
   const [query, setQuery] = useState({
     type: "buy",
-    location: "",
-    minPrice: "MinPrice",
-    maxPrice: "MaxPrice",
+    city: "",
+    priceRange: "",
+    propertyType: "",
   });
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     AOS.init({
       duration: 1200,
       once: true,
     });
-
     const slider = tns({
       container: ".hero-slide",
       items: 1,
@@ -46,30 +52,64 @@ function SearchBar() {
     setQuery((prev) => ({ ...prev, type: val }));
   };
 
-  // Hàm xử lý tìm kiếm
-  const handleSearch = (e) => {
-    e.preventDefault(); // Ngăn chặn hành vi mặc định của form
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
 
-    // Kiểm tra và xử lý thông tin tìm kiếm
-    const { location, minPrice, maxPrice } = query;
+    const { city, priceRange, propertyType } = query;
+    let [minPrice, maxPrice] = priceRange
+      ? priceRange.split("-").map(Number)
+      : [undefined, undefined];
 
-    if (!location) {
-      alert("Vui lòng nhập thành phố.");
+    // Kiểm tra các điều kiện tìm kiếm
+    if (!city) {
+      setErrorMessage("Vui lòng nhập thành phố.");
       return;
     }
 
+    // Kiểm tra các điều kiện giá
+    if (priceRange && (isNaN(minPrice) || isNaN(maxPrice))) {
+      setErrorMessage("Khoảng giá không hợp lệ.");
+      return;
+    }
     if (minPrice < 0 || maxPrice < 0) {
-      alert("Giá không thể âm.");
+      setErrorMessage("Giá không thể âm.");
       return;
     }
-
     if (minPrice > maxPrice) {
-      alert("Giá tối thiểu phải nhỏ hơn giá tối đa.");
+      setErrorMessage("Giá tối thiểu phải nhỏ hơn giá tối đa.");
       return;
     }
 
-    // Xử lý tìm kiếm (gọi API hoặc logic tìm kiếm ở đây)
-    console.log("Searching for:", query);
+    try {
+      const response = await axios.get(`http://localhost:5000/api/property`, {
+        params: {
+          type: query.type,
+          city: city,
+          minPrice: priceRange ? minPrice : undefined,
+          maxPrice: priceRange ? maxPrice : undefined,
+          propertyType: propertyType,
+        },
+      });
+
+      const data = response.data;
+
+      if (data.success && data.data.length > 0) {
+        setSuccessMessage(`Tìm thấy ${data.meta.total} bất động sản.`);
+        navigate(
+          `/search-result?type=${query.type}&city=${city}&minPrice=${minPrice}&maxPrice=${maxPrice}&propertyType=${propertyType}`
+        );
+      } else {
+        setErrorMessage(data.message || "Không tìm thấy bất động sản.");
+      }
+    } catch (error) {
+      setErrorMessage("Đã xảy ra lỗi khi tìm kiếm.");
+      console.error(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
+    }
   };
 
   return (
@@ -88,10 +128,9 @@ function SearchBar() {
           style={{ backgroundImage: `url(${heroBg1})` }}
         ></div>
       </div>
-
       <div className="container">
         <div className="row justify-content-center align-items-center">
-          <div className="col-lg-9 text-center">
+          <div className="col-lg-9 text-center" style={{paddingTop:"10%"}}>
             <button
               className={`btn btn-primary ${
                 query.type === "buy" ? "active" : ""
@@ -115,50 +154,55 @@ function SearchBar() {
               Thuê
             </button>
           </div>
-          <form
-            action="#"
-            className="narrow-w form-search d-flex align-items-stretch mb-3"
-            data-aos="fade-up"
-            data-aos-delay="200"
-            style={{ marginTop: "-600px" }}
-            onSubmit={handleSearch} // Gọi hàm xử lý tìm kiếm khi gửi form
-          >
+
+          <form action="#" className="form-search" onSubmit={handleSearch}>
             <input
               type="text"
-              className="form-control px-4"
+              className="form-control form-control-custom"
               placeholder="Thành phố"
-              value={query.location}
-              onChange={(e) => setQuery({ ...query, location: e.target.value })}
-              style={{ borderRadius: "20px" }}
+              value={query.city}
+              onChange={(e) => setQuery({ ...query, city: e.target.value })}
             />
-            <input
-              type="number"
-              className="form-control px-4"
-              min={0}
-              max={10000000000}
-              placeholder="Max Price"
-              value={query.maxPrice}
+            <select
+              className="form-control form-control-custom"
+              value={query.priceRange}
               onChange={(e) =>
-                setQuery({ ...query, maxPrice: parseFloat(e.target.value) })
+                setQuery({ ...query, priceRange: e.target.value })
               }
-              style={{ borderRadius: "20px" }}
-            />
-            <input
-              type="number"
-              className="form-control px-4"
-              min={0}
-              max={10000000000}
-              placeholder="Min Price"
-              value={query.minPrice}
+              style={{ paddingBottom: "0px", paddingTop: "2px" }}
+            >
+              <option value="">Chọn khoảng giá</option>
+              <option value="0-5000000000">Dưới 5 tỷ</option>
+              <option value="5000000000-10000000000">5 tỷ - 10 tỷ</option>
+              <option value="10000000000-15000000000">10 tỷ - 15 tỷ</option>
+              <option value="15000000000-20000000000">15 tỷ - 20 tỷ</option>
+            </select>
+            <select
+              className="form-control form-control-custom"
+              value={query.propertyType}
               onChange={(e) =>
-                setQuery({ ...query, minPrice: parseFloat(e.target.value) })
+                setQuery({ ...query, propertyType: e.target.value })
               }
-              style={{ borderRadius: "20px" }}
-            />
+              style={{ paddingBottom: "0px", paddingTop: "2px" }}
+            >
+              <option value="">Chọn loại bất động sản</option>
+              <option value="all">Tất cả</option>
+              <option value="house">Nhà</option>
+              <option value="apartment">Căn hộ</option>
+              <option value="land">Đất</option>
+              <option value="commercial">Thương mại</option>
+            </select>
             <button type="submit" className="btn btn-primary">
-              Search
+              Tìm kiếm
             </button>
           </form>
+
+          {errorMessage && (
+            <div className="alert alert-danger">{errorMessage}</div>
+          )}
+          {successMessage && (
+            <div className="alert alert-success">{successMessage}</div>
+          )}
         </div>
       </div>
     </div>

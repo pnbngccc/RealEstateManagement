@@ -134,8 +134,8 @@ function Login() {
     setLoading(true);
     setError("");
     const formData = new FormData(e.target);
-    const username = formData.get("register-username");
-    const password = formData.get("register-password");
+    const username = formData.get("login-username");
+    const password = formData.get("login-password");
 
     try {
       const response = await axios.post(
@@ -147,12 +147,13 @@ function Login() {
       );
 
       const userData = response.data;
-      console.log("User data:", userData); // Kiểm tra dữ liệu trả về
+
+      console.log("User data:", userData);
       localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("token", userData.token); // Lưu token nếu có
 
       // Cập nhật currentUser trong Context
-      setCurrentUser(userData);
+      setCurrentUser(userData.user);
 
       // Điều hướng dựa trên vai trò
       if (userData.role === "admin") {
@@ -184,7 +185,7 @@ function Login() {
                 type="text"
                 className="form-control"
                 id="login-username"
-                name="register-username"
+                name="login-username"
                 required
               />
             </div>
@@ -194,7 +195,7 @@ function Login() {
                 type="password"
                 className="form-control"
                 id="login-password"
-                name="register-password"
+                name="login-password"
                 required
               />
             </div>

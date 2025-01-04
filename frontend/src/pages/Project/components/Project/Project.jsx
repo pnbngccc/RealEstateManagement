@@ -244,7 +244,11 @@ function ProjectList() {
               <div className="property-item mb-30">
                 <a href={`/project/${project.id}`} className="img">
                   <img
-                    src={project.image}
+                    src={
+                      project.images && project.images.length > 0
+                        ? project.images[0]
+                        : "default-image.jpg"
+                    } // Hiển thị ảnh đầu tiên hoặc ảnh mặc định
                     alt="Project"
                     className="img-fluid"
                   />
@@ -296,7 +300,7 @@ function ProjectList() {
                       </div>
                     </div>
                     <a
-                      href={`/project/${project._id}`}
+                      href={`/projects/${project._id}`}
                       className="btn btn-primary py-2 px-3"
                     >
                       Xem chi tiết

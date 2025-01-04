@@ -6,6 +6,8 @@ import projectRoute from "./ProjectRoute.js";
 import newsRoute from "./NewsRoute.js";
 import favoriteRoute from "./FavoriteRoute.js";
 import testRoute from "./testRoute.js";
+import postRoute from "./PostRoute.js";
+
 export {
   userRoute,
   authRoute,
@@ -15,4 +17,5 @@ export {
   projectRoute,
   propertyDetailRoute,
   favoriteRoute,
+  postRoute,
 };

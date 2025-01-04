@@ -10,7 +10,7 @@ const HeroProjectList = () => {
         <div className="row justify-content-center align-items-center">
           <div className="col-lg-9 text-center mt-5">
             <h1 className="heading" data-aos="fade-up">
-              5232 California AVE. 21BC
+              Thông tin chi tiết
             </h1>
 
             <nav
@@ -29,7 +29,7 @@ const HeroProjectList = () => {
                   className="breadcrumb-item active text-white-50"
                   aria-current="page"
                 >
-                  5232 California AVE. 21BC
+                  Thông tin chi tiết
                 </li>
               </ol>
             </nav>

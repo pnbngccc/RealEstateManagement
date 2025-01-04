@@ -10,7 +10,7 @@ function HeroAboutList() {
         <div className="row justify-content-center align-items-center">
           <div className="col-lg-9 text-center mt-5">
             <h1 className="heading" data-aos="fade-up">
-              5232 California AVE. 21BC
+              Thông tin chi tiết
             </h1>
 
             <nav
@@ -23,13 +23,13 @@ function HeroAboutList() {
                   <a href="/">Trang chủ</a>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="/project">Dự án</a>
+                  <a href="/project">Tin tức</a>
                 </li>
                 <li
                   className="breadcrumb-item active text-white-50"
                   aria-current="page"
                 >
-                  5232 California AVE. 21BC
+                  Thông tin chi tiết
                 </li>
               </ol>
             </nav>

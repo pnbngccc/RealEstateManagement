@@ -45,7 +45,7 @@ export const verifyToken = (req, res, next) => {
       console.error("JWT Verification Error:", err.message);
       return res.status(403).json({ message: "Token is not valid!" });
     }
-
+    console.log("JWT Secret:", process.env.SECRET_JWT);
     console.log("Decoded Payload:", payload);
 
     req.userId = payload.id; // Gán userId từ payload

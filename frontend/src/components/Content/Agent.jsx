@@ -15,7 +15,6 @@ function CallToAction() {
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
-    // Xử lý logic đăng nhập ở đây
   };
 
   return (

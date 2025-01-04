@@ -373,6 +373,7 @@
 // };
 
 // export default NewForm;
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./News.css";
@@ -386,8 +387,8 @@ const NewForm = () => {
   const [newNews, setNewNews] = useState({
     title: "",
     description: "",
-    image: "",
-    publicId: "",
+    images: [], // Thay đổi từ image sang images
+    publicIds: [], // Mảng publicId
     published_date: "",
     status: "",
   });
@@ -396,16 +397,15 @@ const NewForm = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [limit] = useState(10);
+  const [notification, setNotification] = useState({ message: "", type: "" });
 
   // Fetch news from API
   const fetchNews = async (page = 1, limit = 10) => {
-    const token = localStorage.getItem("token"); // Lấy token từ localStorage
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.get("http://localhost:5000/api/news", {
         params: { page, limit },
-        headers: {
-          Authorization: `Bearer ${token}`, // Gửi token qua header
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setNews(response.data.data || []);
       setTotal(response.data.meta.total);
@@ -427,8 +427,8 @@ const NewForm = () => {
     setNewNews({
       title: newsItem.title || "",
       description: newsItem.description || "",
-      image: newsItem.image || "",
-      publicId: newsItem.publicId || "",
+      images: newsItem.images || [], // Lưu trữ mảng ảnh
+      publicIds: newsItem.publicIds || [], // Lưu trữ mảng publicId
       published_date: newsItem.published_date || "",
       status: newsItem.status || "",
     });
@@ -436,52 +436,54 @@ const NewForm = () => {
   };
 
   const handleDelete = async (id) => {
-    const token = localStorage.getItem("token"); // Lấy token từ localStorage
+    const token = localStorage.getItem("token");
     try {
       await axios.delete(`http://localhost:5000/api/news/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Gửi token qua header
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setNews(news.filter((newsItem) => newsItem._id !== id));
+      setNotification({ message: "Xóa thành công!", type: "success" });
     } catch (error) {
       console.error("Error deleting news:", error);
       setError(error.response?.data?.message || "Failed to delete news.");
     }
   };
 
+  const handleCloseNotification = () => {
+    setNotification({ message: "", type: "" });
+  };
+
   const handleAdd = async () => {
     if (
       !newNews.title ||
       !newNews.description ||
-      !newNews.image ||
+      !newNews.images.length ||
       !newNews.published_date
     ) {
-      alert("All fields are required!");
+      alert("Vui lòng nhập hết tất cả các trường!");
       return;
     }
     const updatedNews = { ...newNews, status: "Đã đăng" };
-    const token = localStorage.getItem("token"); // Lấy token từ localStorage
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.post(
         "http://localhost:5000/api/news/",
         updatedNews,
         {
-          headers: {
-            Authorization: `Bearer ${token}`, // Gửi token qua header
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       setNews([...news, response.data.data]);
       setNewNews({
         title: "",
         description: "",
-        image: "",
-        publicId: "",
+        images: [],
+        publicIds: [],
         published_date: "",
         status: "Đã đăng",
       });
       setShowForm(false);
+      setNotification({ message: "Thêm thành công!", type: "success" });
     } catch (error) {
       console.error("Error adding news:", error);
       setError(error.response?.data?.message || "Failed to add news.");
@@ -493,22 +495,20 @@ const NewForm = () => {
       !editingNews ||
       !newNews.title ||
       !newNews.description ||
-      !newNews.image ||
+      !newNews.images.length ||
       !newNews.published_date ||
       !newNews.status
     ) {
-      alert("All fields are required!");
+      alert("Tất cả các trường đều bắt buộc!");
       return;
     }
-    const token = localStorage.getItem("token"); // Lấy token từ localStorage
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.put(
         `http://localhost:5000/api/news/${editingNews._id}`,
         newNews,
         {
-          headers: {
-            Authorization: `Bearer ${token}`, // Gửi token qua header
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       setNews(
@@ -520,12 +520,13 @@ const NewForm = () => {
       setNewNews({
         title: "",
         description: "",
-        image: "",
-        publicId: "",
+        images: [],
+        publicIds: [],
         published_date: "",
         status: "Đã đăng",
       });
       setShowForm(false);
+      setNotification({ message: "Cập nhật thành công!", type: "success" });
     } catch (error) {
       console.error("Error updating news:", error);
       setError(error.response?.data?.message || "Failed to update news.");
@@ -533,13 +534,22 @@ const NewForm = () => {
   };
 
   const handleUploadSuccess = (url, publicId) => {
-    setNewNews({ ...newNews, image: url, publicId });
+    setNewNews((prev) => ({
+      ...prev,
+      images: [...prev.images, url],
+      publicIds: [...prev.publicIds, publicId],
+    }));
   };
 
   const filteredProperties = news.filter((property) =>
     property.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  const handleDeleteImage = (index) => {
+    setNewNews((prev) => {
+      const updatedImages = prev.images.filter((_, i) => i !== index); // Lọc bỏ ảnh tại chỉ số được chọn
+      return { ...prev, images: updatedImages }; // Cập nhật trạng thái
+    });
+  };
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -555,6 +565,7 @@ const NewForm = () => {
             <i className="fas fa-plus"></i>
           </button>
         </div>
+
         {error && <div className="error-message text-danger">{error}</div>}
         <div className="d-flex">
           <input
@@ -570,7 +581,18 @@ const NewForm = () => {
           </button>
         </div>
       </div>
-
+      {notification.message && (
+        <div
+          className={`alert alert-${
+            notification.type === "error" ? "danger" : "success"
+          } d-flex justify-content-between align-items-center`}
+        >
+          {notification.message}
+          <button className="btn-close" onClick={handleCloseNotification}>
+            &times;
+          </button>
+        </div>
+      )}
       {showForm && (
         <div className="mb-3">
           <h4>{editingNews ? "Cập nhật tin tức" : "Thêm tin tức"}</h4>
@@ -578,14 +600,14 @@ const NewForm = () => {
             <input
               type="text"
               placeholder="Tiêu đề"
-              value={newNews.title || ""}
+              value={newNews.title}
               onChange={(e) =>
                 setNewNews({ ...newNews, title: e.target.value })
               }
             />
             <textarea
               placeholder="Nội dung"
-              value={newNews.description || ""}
+              value={newNews.description}
               onChange={(e) =>
                 setNewNews({ ...newNews, description: e.target.value })
               }
@@ -596,35 +618,59 @@ const NewForm = () => {
               uwConfig={{
                 cloudName: "djlc7ihxv",
                 uploadPreset: "estate",
-                multiple: false,
+                multiple: true, // Cho phép tải lên nhiều ảnh
                 maxImageFileSize: 2000000,
                 folder: "news",
               }}
-              setAvatar={(url) => handleUploadSuccess(url, "")}
+              setAvatar={handleUploadSuccess}
             />
-            {newNews.image && (
+            {newNews.images.length > 0 && (
               <div>
-                <img
-                  src={newNews.image}
-                  alt="News"
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    objectFit: "cover",
-                    marginTop: "10px",
-                  }}
-                />
+                {newNews.images.map((image, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      position: "relative",
+                      display: "inline-block",
+                      margin: "10px",
+                    }}
+                  >
+                    <img
+                      src={image}
+                      alt="Bất động sản"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "cover",
+                      }}
+                    />
+                    <button
+                      onClick={() => handleDeleteImage(index)} // Gọi hàm xóa ảnh
+                      style={{
+                        position: "absolute",
+                        top: "5px",
+                        right: "5px",
+                        background: "transparent",
+                        border: "1px solid black",
+                        backgroundColor: "#ccc",
+                        color: "white",
+                        fontWeight: "1000px",
+                        fontSize: "16px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      &times; {/* Dấu X */}
+                    </button>
+                  </div>
+                ))}
               </div>
             )}
             <input
               type="date"
               placeholder="Ngày xuất bản"
-              value={newNews.published_date || ""}
+              value={newNews.published_date}
               onChange={(e) =>
-                setNewNews({
-                  ...newNews,
-                  published_date: e.target.value,
-                })
+                setNewNews({ ...newNews, published_date: e.target.value })
               }
             />
             <button onClick={editingNews ? handleUpdate : handleAdd}>
@@ -656,15 +702,19 @@ const NewForm = () => {
                 <tr key={newsItem._id}>
                   <td>{newsItem._id}</td>
                   <td>
-                    <img
-                      src={newsItem.image}
-                      alt={newsItem.title}
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        borderRadius: "50%",
-                      }}
-                    />
+                    {newsItem.images.length > 0 ? (
+                      <img
+                        src={newsItem.images[0]} // Hiển thị hình ảnh đầu tiên
+                        alt={newsItem.title}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    ) : (
+                      "Không có hình"
+                    )}
                   </td>
                   <td>{newsItem.title}</td>
                   <td
@@ -681,7 +731,6 @@ const NewForm = () => {
                   <td>
                     {newsItem.idAuthor ? newsItem.idAuthor._id : "Unknown"}
                   </td>
-
                   <td style={{ width: "230px" }}>
                     <button
                       className="btn-edit"

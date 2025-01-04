@@ -9,10 +9,6 @@ function HomeSection() {
             <h2 className="font-weight-bold heading text-primary mb-4">
               Hãy tìm một ngôi nhà hoàn hảo cho bạn{" "}
             </h2>
-            {/* <p className="text-black-50">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-              enim pariatur similique debitis vel nisi qui reprehenderit.
-            </p> */}
           </div>
         </div>
         <div className="row justify-content-between mb-5">

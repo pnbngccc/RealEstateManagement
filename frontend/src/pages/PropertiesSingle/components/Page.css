@@ -5,7 +5,7 @@
 }
 .wrapper {
   margin: 0 auto; /* Giúp căn giữa */
-  max-width: 1200px; /* Giới hạn chiều rộng tối đa */
+  max-width: 1200px;
 }
 .customer-pin {
   height: auto;
@@ -19,25 +19,24 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  
 }
 .user-buttons {
   display: flex;
-  flex-direction: column; 
-  margin-top: 10px; 
+  flex-direction: column;
+  margin-top: 10px;
   align-items: center;
 }
 
 .user-buttons button {
-  margin-bottom: 10px; /* Khoảng cách giữa các nút */
-  width: 40%; /* Đặt chiều rộng nút bằng 100% */
+  margin-bottom: 10px;
+  width: 40%;
 }
 
-.customer-button{
+.customer-button {
   border-radius: 10px;
   border: 1px solid #005555;
 }
-.controls button{
+.controls button {
   display: flex;
   flex-direction: row;
   align-items: center;

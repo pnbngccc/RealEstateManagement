@@ -1,0 +1,31 @@
+.form-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20%;
+}
+
+.form-control-custom {
+  border-radius: 20px;
+  padding: 10px 15px;
+  border: 1px solid #ced4da;
+  width: 200px;
+}
+
+.btn-primary {
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.alert {
+  margin-top: 10px;
+}
+
+
+.form-control-custom {
+  width: 100%; /* Đảm bảo chiều rộng 100% */
+  padding: 10px; /* Thêm padding để chữ không bị chèn sát viền */
+  font-size: 16px; /* Đảm bảo kích thước chữ đủ lớn */
+  box-sizing: border-box; /* Tính toán padding và border vào tổng chiều rộng */
+}

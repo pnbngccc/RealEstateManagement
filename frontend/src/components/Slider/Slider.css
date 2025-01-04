@@ -5,7 +5,6 @@
   margin: auto;
 }
 
-
 .slider-main {
   display: flex;
   align-items: center;
@@ -36,7 +35,7 @@
 .slider-image img {
   width: 100%;
   height: auto;
-  border-radius: 10px; /* Bo góc */
+  border-radius: 10px;
 }
 
 .slider-thumbnails {
@@ -55,9 +54,9 @@
 }
 
 .thumbnail:hover {
-  border: 2px solid #d9534f; /* Đổi màu viền khi hover */
+  border: 2px solid #d9534f;
 }
 
 .thumbnail.active {
-  border: 2px solid #d9534f; /* Viền màu cho hình đang được chọn */
+  border: 2px solid #d9534f;
 }

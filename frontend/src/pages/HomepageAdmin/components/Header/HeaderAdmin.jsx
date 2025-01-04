@@ -320,6 +320,9 @@ function HeaderAdmin() {
           <li>
             <a href="/about-list">Tin tức</a>
           </li>
+          <li>
+            <a href="/report">Báo cáo</a>
+          </li>
         </>
       );
     } else {
@@ -419,12 +422,23 @@ function HeaderAdmin() {
                     >
                       Hồ sơ
                     </button>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => navigate("/favorite")}
-                    >
-                      Danh sách yêu thích{" "}
-                    </button>
+
+                    {currentUser?.role !== "admin" && (
+                      <>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => navigate("/favorite")}
+                        >
+                          Danh sách yêu thích
+                        </button>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => navigate("/post-article")}
+                        >
+                          Đăng bài
+                        </button>
+                      </>
+                    )}
                     <button className="dropdown-item" onClick={handleLogout}>
                       Đăng xuất
                     </button>
@@ -436,6 +450,7 @@ function HeaderAdmin() {
                 <button
                   className="btn btn-primary me-2"
                   onClick={() => navigate("/register")}
+                  style={{ backgroundColor: "#c3c3c3", color: "#333" }}
                 >
                   Đăng ký
                 </button>

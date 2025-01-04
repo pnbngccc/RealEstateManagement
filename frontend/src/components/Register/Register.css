@@ -1,4 +1,3 @@
-/* CSS để làm mờ phần nội dung còn lại */
 .login-overlay {
   position: fixed;
   top: 0;
@@ -15,64 +14,56 @@
 /* CSS cho form đăng nhập */
 .login-form {
   background: white;
-  padding: 2rem; /* Padding cho form */
-  max-width: 400px; /* Đặt chiều rộng tối đa cho form */
-  width: 90%; /* Chiều rộng của form chiếm 90% chiều rộng màn hình */
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* transition: transform 0.3s ease; Thêm hiệu ứng chuyển động */
 }
 
-/* Hiệu ứng hover cho form */
-/* .login-form:hover {
-    transform: scale(1.02); 
-  } */
-
-/* Các thuộc tính cho tiêu đề */
 .login-form h2 {
-  margin-bottom: 1rem; /* Khoảng cách dưới tiêu đề */
-  font-size: 1.5rem; /* Kích thước chữ cho tiêu đề */
-  text-align: center; /* Căn giữa tiêu đề */
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
 }
 
-/* Các thuộc tính cho các input */
 .login-form .form-group {
-  margin-bottom: 1rem; /* Khoảng cách giữa các trường */
+  margin-bottom: 1rem;
 }
 
 .login-form .form-control {
-  width: 100%; /* Chiều rộng 100% cho input */
-  padding: 0.5rem; /* Padding cho input */
-  border: 1px solid #ccc; /* Đường viền */
-  border-radius: 4px; /* Bo góc cho input */
-  font-size: 1rem; /* Kích thước chữ cho input */
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
 }
 
 /* Các thuộc tính cho nút */
 .login-form .btn {
-  width: 100%; /* Chiều rộng 100% cho nút */
-  padding: 0.5rem; /* Padding cho nút */
-  border-radius: 4px; /* Bo góc cho nút */
-  font-size: 1rem; /* Kích thước chữ cho nút */
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
 }
 
 /* Nút đăng nhập */
 .login-form .btn-primary {
-  background-color: #005555; /* Màu nền cho nút đăng nhập */
-  color: white; /* Màu chữ cho nút đăng nhập */
+  background-color: #005555;
+  color: white;
 }
 
 /* Nút hủy */
 .login-form .btn-secondary {
-  background-color: #b8b8b8; /* Màu nền cho nút hủy */
-  color: white; /* Màu chữ cho nút hủy */
+  background-color: #b8b8b8;
+  color: white;
 }
 
 /* Hiệu ứng hover cho các nút */
 .login-form .btn:hover {
-  opacity: 0.9; /* Thay đổi độ mờ khi hover */
+  opacity: 0.9;
 }
 .error-message {
-  color: red; /* Màu đỏ cho thông báo lỗi */
-  margin-bottom: 1rem; /* Khoảng cách dưới thông báo lỗi */
+  color: red;
+  margin-bottom: 1rem;
 }

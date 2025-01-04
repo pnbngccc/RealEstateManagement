@@ -445,8 +445,7 @@ const ProjectForm = () => {
   const [editingProject, setEditingProject] = useState(null);
   const [newProject, setNewProject] = useState({
     title: "",
-    image: "",
-    publicId: "",
+    images: [], // Chuyển từ image sang images
     description: "",
     area: "",
     address: "",
@@ -459,15 +458,14 @@ const ProjectForm = () => {
   const [limit] = useState(10);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
-
-  // Fetch properties from API
+  const [notification, setNotification] = useState({ message: "", type: "" });
   const fetchProjects = async (page = 1, limit = 10) => {
     try {
-      const token = localStorage.getItem("token"); // Lấy token từ localStorage
+      const token = localStorage.getItem("token");
       const response = await axios.get("http://localhost:5000/api/project", {
         params: { page, limit },
         headers: {
-          Authorization: `Bearer ${token}`, // Gửi token qua header
+          Authorization: `Bearer ${token}`,
         },
       });
       setProjects(response.data.data || []);
@@ -490,9 +488,8 @@ const ProjectForm = () => {
     setNewProject({
       title: project.title || "",
       description: project.description || "",
-      image: project.image || "",
+      images: project.images || [], // Cập nhật mảng images
       address: project.address || "",
-      publicId: project.publicId || "",
       area: project.area || "",
       building: project.building || "",
       apartment: project.apartment || "",
@@ -506,10 +503,11 @@ const ProjectForm = () => {
       const token = localStorage.getItem("token");
       await axios.delete(`http://localhost:5000/api/project/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Gửi token qua header
+          Authorization: `Bearer ${token}`,
         },
       });
       setProjects(projects.filter((project) => project._id !== id));
+      setNotification({ message: "Xóa thành công!", type: "success" });
     } catch (error) {
       console.error("Error deleting project:", error);
       setError(error.response?.data?.message || "Failed to delete project.");
@@ -520,7 +518,7 @@ const ProjectForm = () => {
     if (
       !newProject.title ||
       !newProject.description ||
-      !newProject.image ||
+      !newProject.images.length ||
       !newProject.address ||
       !newProject.area ||
       !newProject.status
@@ -540,7 +538,7 @@ const ProjectForm = () => {
         projectData,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Gửi token qua header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -549,16 +547,16 @@ const ProjectForm = () => {
       setTotal((prevTotal) => prevTotal + 1);
       setNewProject({
         title: "",
+        images: [], // Reset mảng images
         description: "",
-        image: "",
         address: "",
-        publicId: "",
         area: "",
         building: "",
         apartment: "",
         status: "",
       });
       setShowForm(false);
+      setNotification({ message: "Thêm thành công!", type: "success" });
     } catch (error) {
       console.error("Error adding Project:", error);
       setError(error.response?.data?.message || "Failed to add Project.");
@@ -570,7 +568,7 @@ const ProjectForm = () => {
       !editingProject ||
       !newProject.title ||
       !newProject.description ||
-      !newProject.image ||
+      !newProject.images.length ||
       !newProject.address ||
       !newProject.area ||
       !newProject.status
@@ -586,7 +584,7 @@ const ProjectForm = () => {
         newProject,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Gửi token qua header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -598,9 +596,8 @@ const ProjectForm = () => {
       setEditingProject(null);
       setNewProject({
         title: "",
+        images: [],
         description: "",
-        image: "",
-        publicId: "",
         area: "",
         address: "",
         building: "",
@@ -608,6 +605,7 @@ const ProjectForm = () => {
         status: "",
       });
       setShowForm(false);
+      setNotification({ message: "Cập nhật thành công!", type: "success" });
     } catch (error) {
       console.error("Error updating project:", error);
       setError(error.response?.data?.message || "Failed to update project.");
@@ -615,7 +613,10 @@ const ProjectForm = () => {
   };
 
   const handleUploadSuccess = (url, publicId) => {
-    setNewProject({ ...newProject, image: url, publicId });
+    setNewProject((prev) => ({
+      ...prev,
+      images: [...prev.images, url], // Thêm ảnh vào mảng
+    }));
   };
 
   const filteredProjects = projects.filter((project) => {
@@ -624,7 +625,15 @@ const ProjectForm = () => {
       .includes(searchTerm.toLowerCase());
     return matchesSearchTerm;
   });
-
+  const handleDeleteImage = (index) => {
+    setNewProject((prev) => {
+      const updatedImages = prev.images.filter((_, i) => i !== index); // Lọc bỏ ảnh tại chỉ số được chọn
+      return { ...prev, images: updatedImages }; // Cập nhật trạng thái
+    });
+  };
+  const handleCloseNotification = () => {
+    setNotification({ message: "", type: "" });
+  };
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -657,14 +666,25 @@ const ProjectForm = () => {
           </button>
         </div>
       </div>
-
+      {notification.message && (
+        <div
+          className={`alert alert-${
+            notification.type === "error" ? "danger" : "success"
+          } d-flex justify-content-between align-items-center`}
+        >
+          {notification.message}
+          <button className="btn-close" onClick={handleCloseNotification}>
+            &times;
+          </button>
+        </div>
+      )}
       {showForm && (
         <div className="mb-3">
-          <h4>{editingProject ? "Update Project" : "Add Project"}</h4>
+          <h4>{editingProject ? "Cập nhật Dự án" : "Thêm Dự án"}</h4>
           <div className="input-group">
             <input
               type="text"
-              placeholder="Title"
+              placeholder="Tiêu đề"
               value={newProject.title || ""}
               onChange={(e) =>
                 setNewProject({ ...newProject, title: e.target.value })
@@ -672,14 +692,14 @@ const ProjectForm = () => {
             />
             <input
               type="text"
-              placeholder="Address"
+              placeholder="Địa chỉ"
               value={newProject.address || ""}
               onChange={(e) =>
                 setNewProject({ ...newProject, address: e.target.value })
               }
             />
             <textarea
-              placeholder="Description"
+              placeholder="Mô tả"
               value={newProject.description || ""}
               onChange={(e) =>
                 setNewProject({ ...newProject, description: e.target.value })
@@ -690,47 +710,74 @@ const ProjectForm = () => {
 
             <CloudinaryUploadWidget
               uwConfig={{
-                cloudName: "djlc7ihxv", // Thay bằng thông tin Cloudinary của bạn
+                cloudName: "djlc7ihxv",
                 uploadPreset: "estate",
-                multiple: false,
+                multiple: true, // Cho phép tải nhiều ảnh
                 maxImageFileSize: 2000000,
                 folder: "projects",
               }}
-              setAvatar={(url) => handleUploadSuccess(url, "")}
+              setAvatar={handleUploadSuccess}
             />
-            {newProject.image && (
+            {newProject.images.length > 0 && (
               <div>
-                <img
-                  src={newProject.image}
-                  alt="Project"
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    objectFit: "cover",
-                    marginTop: "10px",
-                  }}
-                />
+                {newProject.images.map((image, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      position: "relative",
+                      display: "inline-block",
+                      margin: "10px",
+                    }}
+                  >
+                    <img
+                      src={image}
+                      alt="Bất động sản"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "cover",
+                      }}
+                    />
+                    <button
+                      onClick={() => handleDeleteImage(index)} // Gọi hàm xóa ảnh
+                      style={{
+                        position: "absolute",
+                        top: "5px",
+                        right: "5px",
+                        background: "transparent",
+                        border: "1px solid black",
+                        backgroundColor: "#ccc",
+                        color: "white",
+                        fontWeight: "1000px",
+                        fontSize: "16px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      &times; {/* Dấu X */}
+                    </button>
+                  </div>
+                ))}
               </div>
             )}
             <input
               type="number"
-              placeholder="Area"
+              placeholder="Diện tích"
               value={newProject.area || ""}
               onChange={(e) =>
                 setNewProject({ ...newProject, area: e.target.value })
               }
             />
             <input
-              type="text"
-              placeholder="Building"
+              type="number"
+              placeholder="Tòa nhà"
               value={newProject.building || ""}
               onChange={(e) =>
                 setNewProject({ ...newProject, building: e.target.value })
               }
             />
             <input
-              type="text"
-              placeholder="Apartment"
+              type="number"
+              placeholder="Căn hộ"
               value={newProject.apartment || ""}
               onChange={(e) =>
                 setNewProject({ ...newProject, apartment: e.target.value })
@@ -749,7 +796,7 @@ const ProjectForm = () => {
               <option value="Đã bàn giao">Đã bàn giao</option>
             </select>
             <button onClick={editingProject ? handleUpdate : handleAdd}>
-              {editingProject ? "Update" : "Add"}
+              {editingProject ? "Cập nhật" : "Thêm"}
             </button>
           </div>
         </div>
@@ -767,8 +814,8 @@ const ProjectForm = () => {
               <th>Địa chỉ</th>
               <th>Nội dung</th>
               <th>Diện tích</th>
-              <th>Building</th>
-              <th>Apartment</th>
+              <th>Tòa nhà</th>
+              <th>Căn hộ</th>
               <th>Trạng thái</th>
               <th>ID user</th>
               <th style={{ width: "180px" }}>Chức năng</th>
@@ -780,15 +827,18 @@ const ProjectForm = () => {
                 <tr key={project._id}>
                   <td>{project._id}</td>
                   <td>
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        borderRadius: "50%",
-                      }}
-                    />
+                    {project.images.length > 0 && (
+                      <img
+                        src={project.images[0]} // Chỉ hiển thị ảnh đầu tiên
+                        alt={`${project.title} ảnh 1`}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
+                          margin: "5px",
+                        }}
+                      />
+                    )}
                   </td>
                   <td>{project.title}</td>
                   <td>{project.address}</td>
@@ -832,7 +882,7 @@ const ProjectForm = () => {
           </tbody>
         </table>
       )}
-      {/* Điều khiển phân trang Bootstrap */}
+
       <nav aria-label="Page navigation">
         <ul className="pagination justify-content-center">
           <li className="page-item">

@@ -1,13 +1,13 @@
 import Footer from "../../components/Footer/Footer";
 import HeaderAdmin from "../HomepageAdmin/components/Header/HeaderAdmin";
-import HeroAdmin from "../HomepageAdmin/components/Hero/HeroAdmin";
 import Favorite from "./component/Favorite";
+import HeroFavorite from "./component/Hero.jsx";
 
 function FavoriteList() {
   return (
     <>
       <HeaderAdmin />
-      <HeroAdmin />
+      <HeroFavorite />
       <Favorite />
       <Footer></Footer>
     </>

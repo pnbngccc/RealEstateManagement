@@ -104,7 +104,7 @@ import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
   try {
-    const { username, password, phone, role } = req.body;
+    const { fullname, username, password, phone, role } = req.body;
 
     // Kiểm tra username đã tồn tại
     const existingUser = await UserModel.findOne({ username });
@@ -119,6 +119,7 @@ const register = async (req, res) => {
 
     // Tạo user mới
     await UserModel.create({
+      fullname: fullname,
       username: username,
       password: hashedPassword,
       phone: phone,
@@ -176,6 +177,7 @@ const login = async (req, res) => {
       user: userInfo,
       role: user.role,
       phone: user.phone,
+      fullname: user.fullname,
       avatar: user.avatar,
     });
   } catch (error) {

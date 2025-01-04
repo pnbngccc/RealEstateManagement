@@ -1,13 +1,13 @@
 import Footer from "../../components/Footer/Footer";
 import HeaderAdmin from "../HomepageAdmin/components/Header/HeaderAdmin";
 import HeroProjectList from "./components/Hero";
-import ProjectList from "./components/ProjectDetails";
+import ProjectDetail from "./components/ProjectDetails";
 function ProjectPageList() {
   return (
     <>
       <HeaderAdmin />
       <HeroProjectList></HeroProjectList>
-      <ProjectList></ProjectList>
+      <ProjectDetail />
       <Footer></Footer>
     </>
   );

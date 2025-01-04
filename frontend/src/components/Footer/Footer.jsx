@@ -12,7 +12,7 @@ function Footer() {
               </address>
               <ul className="list-unstyled links">
                 <li>
-                  <a href="tel:+84931153677">+84-931153677</a>
+                  <span>+84-931153677</span>
                 </li>
                 <li>
                   <a href="mailto:RealEstateManagement@gmail.com">
@@ -77,24 +77,10 @@ function Footer() {
                 </li>
                 <li>
                   <a href="#">
-                    <span className="icon-twitter"></span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
                     <span className="icon-facebook"></span>
                   </a>
                 </li>
-                <li>
-                  <a href="#">
-                    <span className="icon-linkedin"></span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span className="icon-pinterest"></span>
-                  </a>
-                </li>
+               
                 <li>
                   <a href="#">
                     <span className="icon-youtube"></span>

@@ -2,7 +2,6 @@ import Homepage from "./components/HomePage/Homepage";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// import routers from "./routers/router";
 import { Suspense } from "react";
 import Properties from "./pages/Properties/Properties";
 import PropertiesSingle1 from "./pages/PropertiesSingle/PropertiesSingle";
@@ -21,12 +20,16 @@ import BuyList from "./pages/Rent_BuyList/Buy_List";
 import NewsList from "./pages/NewsList/News";
 import ContactList from "./pages/Contact/Contact";
 import Project from "./pages/Project/Project";
-import ProjectPageList from "./pages/ProjectSingle/ProjectSingle";
 import AboutSingle from "./pages/AboutSingle/AboutSingle";
 import ProjectList from "./pages/ProjectList/Project";
 import RentUserList from "./pages/Buy_Rent_User/RentUserList";
 import BuyUserList from "./pages/Buy_Rent_User/BuyUserList";
 import FavoriteList from "./pages/Favorite/Favorite";
+import SearchResults from "./components/Search/Search";
+import PostArticle from "./pages/Post/Post";
+import ReportAdminList from "./pages/ReportAdmin/ReportAdminList";
+import ProjectPageList from "./pages/ProjectSingle/ProjectSingle";
+
 function App() {
   return (
     <>
@@ -40,7 +43,7 @@ function App() {
               element={<PropertiesSingle1 />}
             ></Route>
             <Route path="/project" element={<Project />}></Route>
-            <Route path="/project/:id" element={<ProjectPageList />}></Route>
+            <Route path="/projects/:id" element={<ProjectPageList />}></Route>
             <Route path="/about" element={<About />}></Route>
             <Route path="/about/:id" element={<AboutSingle />}></Route>
             <Route path="/contact" element={<ContactList />}></Route>
@@ -59,7 +62,9 @@ function App() {
             <Route path="/about-list" element={<NewsList />}></Route>
             <Route path="/project-list" element={<ProjectList />}></Route>
             <Route path="/favorite" element={<FavoriteList />}></Route>
-
+            <Route path="/search-result" element={<SearchResults />}></Route>
+            <Route path="/post-article" element={<PostArticle />}></Route>
+            <Route path="/report" element={<ReportAdminList />}></Route>
             {/* {routers.map((item, index) => {
               return (
                 <Route

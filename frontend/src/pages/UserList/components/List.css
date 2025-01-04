@@ -35,8 +35,8 @@ tbody tr:hover {
 
 .btn-search {
   padding: 5px 15px; /* Khoảng cách bên trong */
-  border-radius: 8px; /* Bo góc */
-  background-color: #007bff; /* Màu nền */
-  color: white; /* Màu chữ */
-  border: none; /* Không có border */
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
 }

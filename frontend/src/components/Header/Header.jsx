@@ -55,6 +55,7 @@ function Header() {
               <button
                 className="btn btn-primary me-2"
                 onClick={() => navigate("/register")}
+                style={{ backgroundColor: "#c3c3c3", color: "#333" }}
               >
                 Đăng ký
               </button>

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const projectSchema = new mongoose.Schema({
   title: String,
   description: String,
-  image: String,
+  images: [{ type: String }],
   status: String,
   address: String,
   area: Number,
